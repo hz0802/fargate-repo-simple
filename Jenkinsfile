@@ -31,7 +31,7 @@ pipeline {
         bx pr login -a $icp_server -u $icp_user -p $icp_pass -c $icp_acctid --skip-ssl-validation
 		bx pr cluster-config $icp_clustername
         kubectl get nodes
-        kubectl run java-app-deployment --image=$Docker_Reg/$Img_Space/$App_Name:latest
+        kubectl run python-app-deployment --image=$Docker_Reg/$Img_Space/$App_Name:latest
         helm init --client-only
         '''
       }
@@ -43,7 +43,7 @@ pipeline {
     }
     stage('sucess !') {
       steps {
-        echo 'Great, Java app build and deployed in icp successfully !'
+        echo 'Great, python app build and deployed in icp successfully !'
       }
     }
   }
@@ -55,7 +55,6 @@ pipeline {
     icp_clustername = 'mycluster'
     Docker_Reg = 'mycluster.icp:8500'
     Img_Space = 'default'
-    App_Name = 'java-app'
-    rel_name = 'mydemo'
+    App_Name = 'python-app'
   }
 }
