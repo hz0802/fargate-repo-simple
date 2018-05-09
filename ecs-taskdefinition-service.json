@@ -1,0 +1,77 @@
+{
+  "AWSTemplateFormatVersion":"2010-09-09",
+	"Parameters": {
+		"Tag": {
+			"Type": "String",
+			"Default": "latest"
+		},
+		"DesiredCount": {
+			"Type": "Number",
+			"Default": 1 
+		},
+		"Cluster": {
+			"Type": "String",
+			"Default": "fargate-cluster"
+		},
+		"Repository": {
+			"Type": "String",
+			"Default": "fargate-ecr"
+		}
+	},
+	"Resources": {
+    "Service": {
+      "Type": "AWS::ECS::Service",
+         "Properties": {
+            "Cluster": { "Ref": "Cluster" },
+            "DesiredCount": { "Ref": "DesiredCount" },
+            "LoadBalancers":[{
+             "ContainerName": "fargate-container",
+             "ContainerPort": "8080",
+             "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:199476098484:targetgroup/fargate-tg1/723d29ce88504961"
+              }],
+            "TaskDefinition": { "Ref": "TaskDefinition1" },
+            "LaunchType" : "FARGATE",
+            "NetworkConfiguration": {
+              "AwsvpcConfiguration": {
+		"AssignPublicIp": "ENABLED",
+                "SecurityGroups": [
+		  "sg-0bd10d883b9506066"
+		],
+                "Subnets": [
+                  "subnet-065c31a7f50b91e08",
+                  "subnet-0c0e0d11073fe5718"
+                  ]
+                }
+              }
+             }
+          },
+    "TaskDefinition1": {
+			"Type": "AWS::ECS::TaskDefinition",
+			"Properties": {
+        "RequiresCompatibilities": [
+          "EC2",
+          "FARGATE"
+        ],
+        "NetworkMode": "awsvpc",
+        "Cpu": "256",
+        "ExecutionRoleArn": "arn:aws:iam::199476098484:role/ecsTaskExecutionRole",
+        "TaskRoleArn": "arn:aws:iam::199476098484:role/ecsTaskExecutionRole",
+        "Memory": "512",
+				"ContainerDefinitions": [
+				{
+					"Name": "fargate-container",
+					"Image": "199476098484.dkr.ecr.us-east-1.amazonaws.com/fargate-ecr:latest",
+					"PortMappings": [
+					{
+						"ContainerPort": "8080",
+						"HostPort": "8080"
+					}
+					],
+					"Essential": "true"
+
+				}
+			  ]
+			}
+		}
+	}
+}
