@@ -27,7 +27,7 @@
             "LoadBalancers":[{
              "ContainerName": "fargate-container",
              "ContainerPort": "8080",
-             "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:199476098484:targetgroup/fargate-tg1/723d29ce88504961"
+             "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:xxx476098484:targetgroup/fargate-tg1/723d29ce88504961"
               }],
             "TaskDefinition": { "Ref": "TaskDefinition1" },
             "LaunchType" : "FARGATE",
