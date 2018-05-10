@@ -32,7 +32,7 @@ pipeline {
 		bx pr cluster-config $icp_clustername
         kubectl get nodes
         kubectl run python-app-deployment --image=$Docker_Reg/$Img_Space/$App_Name:latest
-		kubectl expose deployment/python-app-deployment --port=8888 --target-port=8888
+		kubectl expose deployment/python-app-deployment --port=80 --target-port=80
         helm init --client-only
         '''
       }
